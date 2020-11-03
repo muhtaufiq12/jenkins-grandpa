@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-def call(Map Param) {
+pipeline {
     agent none
     environment {
         // This can be nexus3 or nexus2
