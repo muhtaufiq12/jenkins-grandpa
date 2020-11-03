@@ -30,14 +30,14 @@ def call(Map Param) {
                 script {
                     pom = readMavenPom file: "pom.xml";
                     filesByGlob = findFiles(glob: "target/*.${pom.packaging}");
-                    echo "${filesByGlob[0].name} ${filesByGlob[0].path} '/n'
-                    ${filesByGlob[0].directory} ${filesByGlob[0].length} '/n'
+                    echo "${filesByGlob[0].name} ${filesByGlob[0].path} '\n'
+                    ${filesByGlob[0].directory} ${filesByGlob[0].length} '\n'
                     ${filesByGlob[0].lastModified}";
                     artifactPath = filesByGlob[0].path;
                     artifactExists = fileExists artifactPath;
 
                     if(artifactExists) {
-                        echo "*** File: ${artifactPath}, group: ${pom.groupId}, '/n'
+                        echo "*** File: ${artifactPath}, group: ${pom.groupId}, '\n'
                         packaging: ${pom.packaging}, version ${pom.version}";
 
                         nexusArtifactUploader(
