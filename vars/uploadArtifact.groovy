@@ -1,7 +1,8 @@
 #!/usr/bin/env groovy
 
-pipeline {
+def call(Map param = null) {
     agent none
+
     environment {
         // This can be nexus3 or nexus2
         NEXUS_VERSION = "nexus3"
@@ -14,7 +15,9 @@ pipeline {
         // Jenkins credential id to authenticate to Nexus OSS
         NEXUS_CREDENTIAL_ID = "nexus-credentials"
     }
+
     stages {
+
         stage('Build') {
             agent {
                 docker {
@@ -26,6 +29,7 @@ pipeline {
                 sh "mvn package -DskipTests=true"
             }
         }
+
         stage('Publish To Nexus') {
             steps {
                 script {
