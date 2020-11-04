@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-def call(Map param = null) {
+def call(Map param) {
     agent none
 
     environment {
