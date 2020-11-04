@@ -1,6 +1,6 @@
 #!/usr/bin/env groovy
 
-def call(Map param) {
+pipeline {
     agent none
 
     environment {
