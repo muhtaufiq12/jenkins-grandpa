@@ -51,7 +51,7 @@ def call(Map param) {
                                 version: pom.version,
                                 repository: NEXUS_REPOSITORY,
                                 credentialsId: NEXUS_CREDENTIAL_ID,
-                                artifatcs: [
+                                artifacts: [
                                     [
                                         artifactId: pom.artifactId,
                                         classifier: '',
