@@ -27,7 +27,7 @@ def call(Map param) {
                     }
                 }
                 steps {
-                    sh "mvn package -DskipTests=true"
+                    sh "mvn -X package"
                 }
             }
 
