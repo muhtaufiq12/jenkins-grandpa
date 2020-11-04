@@ -2,7 +2,7 @@
 
 def call(Map param) {
     pipeline {
-        agent none
+        agent any
 
         environment {
             // This can be nexus3 or nexus2
