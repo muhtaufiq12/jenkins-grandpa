@@ -23,7 +23,7 @@ def call(Map param) {
                 agent {
                     docker {
                         image 'maven:3.6.3-openjdk-8'
-                        args '-v var/lib/jenkins/.m2:/root/.m2'
+                        args '-v /var/lib/jenkins/.m2:/root/.m2'
                     }
                 }
                 steps {
