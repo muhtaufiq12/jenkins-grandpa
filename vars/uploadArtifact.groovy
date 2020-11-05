@@ -27,7 +27,7 @@ def call(Map param) {
                     }
                 }
                 steps {
-                    sh "maven compile -o"
+                    sh "mvn compile -o"
                 }
             }
 
