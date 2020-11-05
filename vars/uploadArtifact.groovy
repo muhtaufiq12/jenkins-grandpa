@@ -24,10 +24,11 @@ def call(Map param) {
                     docker {
                         image 'maven:3.6.3-openjdk-8'
                         args '-v /var/lib/jenkins/.m2:/root/.m2'
+                        reuseNode true
                     }
                 }
                 steps {
-                    sh "mvn compile -o"
+                    sh "mvn -X package"
                 }
             }
 
