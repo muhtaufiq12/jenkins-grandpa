@@ -22,7 +22,7 @@ def call(Map param) {
                     }
                 }
                 steps {
-                    sh "mvn -X package"
+                    sh "mvn clean install"
                 }
             }
 
