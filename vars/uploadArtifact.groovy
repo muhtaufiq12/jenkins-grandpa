@@ -17,12 +17,13 @@ def call(Map param) {
             stage('Build') {
                 agent {
                     docker {
-                        image 'maven:3.6.3-openjdk-8'
+                        // image 'maven:3.6.3-openjdk-8'
+                        image 'maven:latest'
                         args '-v /var/lib/jenkins/.m2:/root/.m2'
                     }
                 }
                 steps {
-                    sh "mvn clean install"
+                    sh "mvn -X clean install"
                 }
             }
 
