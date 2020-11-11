@@ -5,15 +5,10 @@ def call(Map param) {
         agent any
 
         environment {
-            // This can be nexus3 or nexus2
             NEXUS_VERSION = "nexus3"
-            // This can be http or https
             NEXUS_PROTOCOL = "http"
-            // Where your Nexus is running. 'nexus-3' is defined in the docker-compose file
             NEXUS_URL = "192.168.43.45:8081"
-            // Repository where we will upload the artifact
             NEXUS_REPOSITORY = "example-repo"
-            // Jenkins credential id to authenticate to Nexus OSS
             NEXUS_CREDENTIAL_ID = "nexus-credentials"
         }
 
@@ -22,7 +17,7 @@ def call(Map param) {
             stage('Build') {
                 agent {
                     docker {
-                        image 'maven:3.6.3-openjdk-8'
+                        image 'maven:3.6.3-openjdk-11'
                         args '-v /var/lib/jenkins/.m2:/root/.m2'
                         reuseNode true
                     }
@@ -73,5 +68,18 @@ def call(Map param) {
                     }
                 }
             }
-    }   }
+
+            stage('Build Docker Image') {
+                steps {
+                    sh 'echo "building image"'
+                }
+            }
+
+            stage('Publish Docker Image') {
+                steps {
+                    sh 'echo "Push image"'
+                }
+            }
+       }
+    }
 }
