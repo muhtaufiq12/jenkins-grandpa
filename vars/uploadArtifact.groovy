@@ -17,8 +17,7 @@ def call(Map param) {
             stage('Build') {
                 agent {
                     docker {
-                        // image 'maven:3.6.3-openjdk-8'
-                        image 'maven:latest'
+                        image 'maven:3.6.3-openjdk-8'
                         args '-v /var/lib/jenkins/.m2:/root/.m2'
                     }
                 }
