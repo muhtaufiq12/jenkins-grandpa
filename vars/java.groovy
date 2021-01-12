@@ -10,7 +10,7 @@ def call(Map param) {
         }
 
         stages {
-            stage('Build') {
+            stage('Build Maven Project') {
                 agent {
                     docker {
                         image 'maven:3.6.3-openjdk-8'
@@ -22,11 +22,18 @@ def call(Map param) {
                 }
             }
 
+            stage('Copy Maven roject Result') {
+                steps {
+                    echo "workspace directory is ${WORKSPACE}"
+                }
+            }
+
             stage('Build Docker Image') {
                 steps {
-                    script {
-                        docker.build registry + ":$BUILD_NUMBER"
-                    }
+                    // script {
+                    //     docker.build registry + ":$BUILD_NUMBER"
+                    // }
+                    echo 'Building Image'
                 }
             }
 
