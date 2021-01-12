@@ -3,6 +3,12 @@
 def call(Map param) {
     pipeline {
         agent any
+
+        environment {
+            registry = "taufiq12/blimart-backend"
+            registryCredential = "dockerhub-credentials"
+        }
+
         stages {
             stage('Build') {
                 agent {
