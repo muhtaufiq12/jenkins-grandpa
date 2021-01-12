@@ -8,12 +8,29 @@ def call(Map param) {
                 agent {
                     docker {
                         image 'maven:3.6.3-openjdk-8'
-                        args '-v $HOME/test-tmp:/test-tmp'
+                        args '-v /root/.m2:/root/.m2'
                     }
                 }
                 steps {
-                    sh 'mvn -q package'
-                    sh 'mvn test'
+                    sh 'mvn package -DskipTests=true'
+                }
+            }
+
+            stage('Build Docker Image') {
+                steps {
+                    echo 'Build Docker Image'
+                }
+            }
+
+            stage('Analyze Docker Image') {
+                steps {
+                    echo 'Analyze Image ..'
+                }
+            }
+
+            stage('Publish Docker Image') {
+                steps {
+                    echo 'Publish Docker Image ..'
                 }
             }
         }
