@@ -24,7 +24,7 @@ def call(Map param) {
 
             stage('Copy Maven Project Result') {
                 steps {
-                    echo "workspace directory is ${WORKSPACE}${BUILD_NUMBER}"
+                    echo "workspace directory is ${WORKSPACE}${BUILD_NUMBER}${BUILD_ID}"
                     // echo "target directory is ${WORKSPACE}/target"
                 }
             }
