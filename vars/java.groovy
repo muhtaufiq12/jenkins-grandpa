@@ -22,9 +22,10 @@ def call(Map param) {
                 }
             }
 
-            stage('Copy Maven roject Result') {
+            stage('Copy Maven Project Result') {
                 steps {
                     echo "workspace directory is ${WORKSPACE}"
+                    echo "target directory is ${WORKSPACE}/target"
                 }
             }
 
