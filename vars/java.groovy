@@ -24,7 +24,9 @@ def call(Map param) {
 
             stage('Build Docker Image') {
                 steps {
-                    echo 'Build Docker Image'
+                    script {
+                        docker.build registry + ":$BUILD_NUMBER"
+                    }
                 }
             }
 
