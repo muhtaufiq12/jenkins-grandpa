@@ -12,7 +12,9 @@ def call(Map param) {
         stages {
             stage('Build and Dockerized Maven Project') {
                 steps {
-                    docker.build("registry-${env.BUILD_ID}", "--build-arg jar_file_path=${WORKSPACE}")
+                    script {
+                        docker.build("registry-${env.BUILD_ID}", "--build-arg jar_file_path=${WORKSPACE}")
+                    }
                 }
             }
 
