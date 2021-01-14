@@ -10,19 +10,9 @@ def call(Map param) {
         }
 
         stages {
-            stage('Build Maven Project') {
-                // agent {
-                //     docker {
-                //         image 'maven:3.6.3-openjdk-8'
-                //         args '-v /root/.m2:/root/.m2'
-                //     }
-                // }
-                // steps {
-                //     sh 'mvn -B -DskipTests clean package'
-                //     echo "workspace directory is ${WORKSPACE}"
-                // }
+            stage('Build and Dockerized Maven Project') {
                 steps {
-                    echo "workspace directory is ${WORKSPACE}"
+                    docker.build("registry-${env.BUILD_ID}", "--build-arg jar_file_path=${WORKSPACE}")
                 }
             }
 
