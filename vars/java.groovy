@@ -13,7 +13,7 @@ def call(Map param) {
             stage('Build and Dockerized Maven Project') {
                 steps {
                     script {
-                        docker.build registry +"-${env.BUILD_ID} " +  "."
+                        docker.build registry +"-${env.BUILD_ID} "
                     }
                 }
             }
