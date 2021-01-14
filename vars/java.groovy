@@ -7,29 +7,15 @@ def call(Map param) {
         environment {
             registry = "taufiq12/blimart-backend"
             registryCredential = "dockerhub-credentials"
+            dockerImage = ''
         }
 
         stages {
             stage('Build and Dockerized Maven Project') {
                 steps {
                     script {
-                        docker.build registry +"-${env.BUILD_ID} "
+                        dockerImage = docker.build registry +"-${env.BUILD_ID} "
                     }
-                }
-            }
-
-            stage('Copy Maven Project Result') {
-                steps {
-                    echo "workspace directory is ${WORKSPACE}"
-                }
-            }
-
-            stage('Build Docker Image') {
-                steps {
-                    // script {
-                    //     docker.build registry + ":$BUILD_NUMBER"
-                    // }
-                    echo 'Building Image'
                 }
             }
 
@@ -41,7 +27,11 @@ def call(Map param) {
 
             stage('Publish Docker Image') {
                 steps {
-                    echo 'Publish Docker Image ..'
+                    script {
+                        docker.withRegistry( '', registryCredential ) {
+                            dockerImage.push()
+                        }
+                    }
                 }
             }
         }
