@@ -11,21 +11,24 @@ def call(Map param) {
 
         stages {
             stage('Build Maven Project') {
-                agent {
-                    docker {
-                        image 'maven:3.6.3-openjdk-8'
-                        args '-v /root/.m2:/root/.m2'
-                    }
-                }
+                // agent {
+                //     docker {
+                //         image 'maven:3.6.3-openjdk-8'
+                //         args '-v /root/.m2:/root/.m2'
+                //     }
+                // }
+                // steps {
+                //     sh 'mvn -B -DskipTests clean package'
+                //     echo "workspace directory is ${WORKSPACE}"
+                // }
                 steps {
-                    sh 'mvn -B -DskipTests clean package'
+                    echo "workspace directory is ${WORKSPACE}"
                 }
             }
 
             stage('Copy Maven Project Result') {
                 steps {
-                    echo "workspace directory is ${WORKSPACE}${BUILD_NUMBER}${BUILD_ID}"
-                    // echo "target directory is ${WORKSPACE}/target"
+                    echo "workspace directory is ${WORKSPACE}"
                 }
             }
 
