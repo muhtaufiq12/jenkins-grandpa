@@ -28,7 +28,7 @@ def call(Map param) {
             stage('Publish Docker Image') {
                 steps {
                     script {
-                        docker.withRegistry( 'https://registry.hub.docker.com', 'registryCredential' ) {
+                        docker.withRegistry( '', registryCredential ) {
                             dockerImage.push("${env.BUILD_NUMBER}")
                             dockerImage.push("latest")
                         }
