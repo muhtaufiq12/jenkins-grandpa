@@ -14,7 +14,7 @@ def call(Map param) {
             stage('Build and Dockerized Maven Project') {
                 steps {
                     script {
-                        dockerImage = docker.build registry +"-${env.BUILD_ID} "
+                        dockerImage = docker.build registry 
                     }
                 }
             }
@@ -28,8 +28,9 @@ def call(Map param) {
             stage('Publish Docker Image') {
                 steps {
                     script {
-                        docker.withRegistry( '', registryCredential ) {
-                            dockerImage.push()
+                        docker.withRegistry( 'https://registry.hub.docker.com', 'registryCredential' ) {
+                            dockerImage.push("${env.BUILD_NUMBER}")
+                            dockerImage.push("latest")
                         }
                     }
                 }
