@@ -5,7 +5,7 @@ def call(Map param) {
         agent any
 
         environment {
-            registry = "taufiq12/blimart-backend"
+            registry = "taufiq12/apps-blimart-backend"
             registryCredential = "dockerhub-credentials"
             dockerImage = ''
         }
@@ -14,7 +14,7 @@ def call(Map param) {
             stage('Build and Dockerized Maven Project') {
                 steps {
                     script {
-                        dockerImage = docker.build registry 
+                        dockerImage = docker.build registry
                     }
                 }
             }
@@ -30,9 +30,14 @@ def call(Map param) {
                     script {
                         docker.withRegistry( '', registryCredential ) {
                             dockerImage.push("${env.BUILD_NUMBER}")
-                            dockerImage.push("latest")
                         }
                     }
+                }
+            }
+
+            stage('Remove Unused Docker Image') {
+                steps {
+                    sh "docker rmi registry:${env.BUILD_NUMBER}"
                 }
             }
         }
