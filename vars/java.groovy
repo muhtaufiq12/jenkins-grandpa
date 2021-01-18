@@ -37,7 +37,7 @@ def call(Map param) {
 
             stage('Remove Unused Docker Image') {
                 steps {
-                    sh "docker rmi registry:${env.BUILD_NUMBER}"
+                    sh "docker rmi ${registry}:${env.BUILD_NUMBER}"
                 }
             }
         }
