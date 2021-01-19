@@ -22,6 +22,8 @@ def call(Map param) {
             stage('Analyze Docker Image') {
                 steps {
                     echo 'Analyze Image ..'
+                    sh "echo '${registry}:${env.BUILD_NUMBER}' ${WORKSPACE}/Dockerfile > anchore_images"
+                    sh "ls ${WORKSPACE}"
                 }
             }
 
