@@ -39,7 +39,7 @@ def call(Map param) {
                 steps {
                     script {
                         docker.withRegistry( '', registryCredential ) {
-                            dockerImage.push("${env.BUILD_NUMBER}")
+                            dockerImage.push("${BUILD_NUMBER}")
                         }
                     }
                 }
@@ -47,9 +47,11 @@ def call(Map param) {
 
             stage('Cleanup Workspace') {
                 steps {
-                    sh "docker rmi ${registry}:${env.BUILD_NUMBER} ${registry}:latest"
-                    sh "docker stop $(docker ps -q)"
-                    sh "docker rm $(docker ps -a -q)"
+                    sh '''
+                        docker rmi ${registry}:${BUILD_NUMBER} ${registry}:latest"
+                        docker stop $(docker ps -q)"
+                        docker rm $(docker ps -a -q)"
+                    '''
                 }
             }
         }
