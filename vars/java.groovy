@@ -8,6 +8,8 @@ def call(Map param) {
             registry = "taufiq12/apps-blimart-backend"
             registryCredential = "dockerhub-credentials"
             dockerImage = ''
+            scannerImage = "arminc/clair-local-scan"
+            scannerDB = "arminc/clair-db" 
         }
 
         stages {
@@ -22,9 +24,9 @@ def call(Map param) {
             stage('Analyze Docker Image') {
                 steps {
                     sh '''
-                        docker run -p 5432:5432 -d --name db arminc/clair-db
+                        docker run -p 5432:5432 -d --name db ${scannerDB}
                         sleep 15
-                        docker run -p 6060:6060 --link db:postgres -d --name clair arminc/clair-local-scan
+                        docker run -p 6060:6060 --link db:postgres -d --name clair ${scannerImage}
                         sleep 1
                         DOCKER_GATEWAY=$(docker network inspect bridge --format "{{range .IPAM.Config}}{{.Gateway}}{{end}}")
                         wget -qO clair-scanner https://github.com/arminc/clair-scanner/releases/download/v8/clair-scanner_linux_amd64 && chmod +x clair-scanner
@@ -43,9 +45,13 @@ def call(Map param) {
                 }
             }
 
-            stage('Remove Unused Docker Image') {
+            stage('Cleanup Workspace') {
                 steps {
-                    sh "docker rmi ${registry}:${env.BUILD_NUMBER}"
+                    sh '''
+                        docker image rm ${registry}:${env.BUILD_NUMBER} ${registry}:latest
+                        docker container stop ${scannerImage} ${scannerDB}
+                        rm clair-scanner
+                    '''
                 }
             }
         }
