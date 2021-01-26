@@ -50,7 +50,6 @@ def call(Map param) {
                     sh '''
                         docker rmi ${registry}:${BUILD_NUMBER}"
                         docker stop $(docker ps -q)"
-                        docker rm $(docker ps -a -q)"
                     '''
                 }
             }
