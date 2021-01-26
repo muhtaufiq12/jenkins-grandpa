@@ -48,7 +48,7 @@ def call(Map param) {
             stage('Cleanup Workspace') {
                 steps {
                     sh '''
-                        docker image rm ${registry}:${env.BUILD_NUMBER} ${registry}:latest
+                        docker rmi ${registry}:${env.BUILD_NUMBER} ${registry}:latest
                         docker container stop ${scannerImage} ${scannerDB}
                         rm clair-scanner
                     '''
