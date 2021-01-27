@@ -47,10 +47,9 @@ def call(Map param) {
 
             stage('Cleanup Workspace') {
                 steps {
-                    sh '''
-                        docker rmi ${registry}:${BUILD_NUMBER}"
-                        docker stop $(docker ps -q)"
-                    '''
+                    sh "docker rmi ${registry}:${BUILD_NUMBER}"
+                    sh "docker stop $(docker ps -q)"
+                    sh "docker rm "
                 }
             }
         }
