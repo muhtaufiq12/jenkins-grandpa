@@ -3,23 +3,58 @@
 def call(Map param) {
     pipeline {
         agent any
+
+        environment {
+            registry = "taufiq12/apps-blimart-frontend"
+            registryCredential = "dockerhub-credentials"
+            dockerImage = ''
+            scannerImage = "arminc/clair-local-scan"
+            scannerDB = "arminc/clair-db" 
+        }
+
         stages {
-
-            stage('Build') {
+            stage('Build and Dockerized Vue Project') {
                 steps {
-                    echo 'Building ...'
+                    script {
+                        dockerImage = docker.build registry
+                    }
                 }
             }
 
-            stage('Test') {
+            stage('Analyze Docker Image') {
                 steps {
-                    echo 'Testing ...'
+                    sh '''
+                        docker run -p 5432:5432 -d --name db ${scannerDB}
+                        sleep 15
+                        docker run -p 6060:6060 --link db:postgres -d --name clair ${scannerImage}
+                        sleep 1
+                        DOCKER_GATEWAY=$(docker network inspect bridge --format "{{range .IPAM.Config}}{{.Gateway}}{{end}}")
+                        wget -qO clair-scanner https://github.com/arminc/clair-scanner/releases/download/v8/clair-scanner_linux_amd64 && chmod +x clair-scanner
+                        ./clair-scanner --ip="$DOCKER_GATEWAY" ${registry} || exit 0
+                    '''
                 }
             }
 
-            stage('Deploy') {
+            stage('Publish Docker Image') {
                 steps {
-                    echo 'Deploying ...'
+                    script {
+                        docker.withRegistry( '', registryCredential ) {
+                            dockerImage.push("${BUILD_NUMBER}")
+                        }
+                    }
+                }
+            }
+
+            stage('Cleanup Workspace') {
+                steps {
+                    sh '''
+                        docker rmi ${registry}:${BUILD_NUMBER}
+                        sleep 30
+                        docker stop $(docker ps -q)
+                        sleep 30
+                        docker rm $(docker ps -a -q)
+                        sleep 10
+                    '''
                 }
             }
         }
