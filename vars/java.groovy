@@ -57,5 +57,10 @@ def call(Map param) {
                 }
             }
         }
+        post {
+            always {
+                cleanWs()
+            }
+        }
     }
 }
