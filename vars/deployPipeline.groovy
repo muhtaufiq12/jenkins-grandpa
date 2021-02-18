@@ -5,7 +5,7 @@ def call(Map params){
     def deliver = libraryResource 'deliver.sh'
     pipeline {
         agent any
-        // stages {
+        stages {
         //     stage('Build and Push Docker Image') {
         //         steps {
         //             withCredentials([
