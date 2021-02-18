@@ -3,6 +3,7 @@ def call(Map params){
     // def build = libraryResource 'build.sh'
     def prepareDeliver = libraryResource 'prepareDeliver.sh'
     def deliver = libraryResource 'deliver.sh'
+    def packageAndShip = libraryResource 'packageAndShip.sh'
     pipeline {
         agent any
         stages {
@@ -25,6 +26,20 @@ def call(Map params){
         //             }
         //         }
         //     }
+            stage('Package Application with HELM') {
+                steps {
+                    container('helm-kubectl') {
+                        withEnv([
+                            'CONTAINER_REGISTRY='+params.containerRegistry,
+                            'CONTAINER_IMAGE='+params.containerImage,
+                            'CONTAINER_VERSION='+params.containerVersion,
+                        ]){
+                            sh(packageAndShip)
+                        }
+                    }
+                }
+            }
+
             stage('Deploy Application to Kubernetes') {
                 agent {
                     docker {
